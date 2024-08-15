@@ -151,31 +151,37 @@ function themeColors() {
     const colorStyle = document.querySelector(".js-color-style");
     const themeColorsContainer = document.querySelector(".js-theme-colors");
 
-    themeColorsContainer.addEventListener("click", ({target}) => {
-        if(target.classList.contains("js-theme-color-item")){
+    themeColorsContainer.addEventListener("click", ({ target }) => {
+        if (target.classList.contains("js-theme-color-item")) {
             localStorage.setItem("color", target.getAttribute("data-js-theme-color"));
             setColors();
         }
-    })
+    });
 
     function setColors() {
         let path = colorStyle.getAttribute('href').split('/');
-        path = path.slice(0, path.length - 1)
+        path = path.slice(0, path.length - 1);
         colorStyle.setAttribute('href', path.join('/') + "/" + localStorage.getItem('color') + '.css');
 
-        if(document.querySelector('.js-theme-color-item.active')){
-            document.querySelector(".js-theme-color-item.active").classList.remove("active");
+        const activeItem = document.querySelector('.js-theme-color-item.active');
+        if (activeItem) {
+            activeItem.classList.remove("active");
         }
-    
-        document.querySelector("[data-js-theme-color = " + localStorage.getItem('color') + "]").classList.add('active');
+
+        const newActiveItem = document.querySelector("[data-js-theme-color='" + localStorage.getItem('color') + "']");
+        if (newActiveItem) {
+            newActiveItem.classList.add('active');
+        }
     }
 
-    if(localStorage.getItem('color') !== null) {
+    if (localStorage.getItem('color') !== null) {
         setColors();
-    }
-    else{
+    } else {
         const defaultColor = colorStyle.getAttribute('href').split("/").pop().split(".").shift();
-        document.querySelector("[data-js-theme-color]" + defaultColor + "]").classList.add("active");
+        const defaultColorItem = document.querySelector("[data-js-theme-color='" + defaultColor + "']");
+        if (defaultColorItem) {
+            defaultColorItem.classList.add("active");
+        }
     }
 }
 
